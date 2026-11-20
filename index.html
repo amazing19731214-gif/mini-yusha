@@ -70,9 +70,9 @@ html,body{margin:0;height:100%;background:#1b2238;font-family:"Hiragino Maru Got
 /* battle */
 #battle{background:#1e2a2c}
 #bc{width:100%;display:block}
-#bhud{position:absolute;left:0;right:0;top:calc(env(safe-area-inset-top) + 6px);display:flex;align-items:center;gap:6px;padding:0 10px;z-index:3}
-#syn{position:absolute;left:10px;top:calc(env(safe-area-inset-top) + 46px);display:flex;gap:4px;z-index:3}#syn span{background:rgba(0,0,0,.5);border-radius:10px;padding:2px 8px;font-size:12px;font-weight:900}#syn span.l2{background:rgba(224,160,32,.85)}
-#wave{position:absolute;left:50%;transform:translateX(-50%);top:calc(env(safe-area-inset-top) + 84px);z-index:4;background:rgba(160,30,30,.88);border:2px solid #ffb0a0;border-radius:14px;padding:5px 12px;font-weight:900;font-size:13px;color:#fff;display:none;align-items:center;gap:6px;white-space:nowrap;box-shadow:0 3px 0 rgba(0,0,0,.4);pointer-events:none}#wave.on{display:flex;animation:wv .6s infinite alternate}#wave img{width:30px;height:30px;object-fit:contain}#wave small{font-size:11px;color:#ffe45c}@keyframes wv{to{transform:translateX(-50%) scale(1.05)}}
+#bhud{position:absolute;left:0;right:0;top:calc(max(env(safe-area-inset-top),var(--st,0px)) + 6px);display:flex;align-items:center;gap:6px;padding:0 10px;z-index:3}
+#syn{position:absolute;left:10px;top:calc(max(env(safe-area-inset-top),var(--st,0px)) + 46px);display:flex;gap:4px;z-index:3}#syn span{background:rgba(0,0,0,.5);border-radius:10px;padding:2px 8px;font-size:12px;font-weight:900}#syn span.l2{background:rgba(224,160,32,.85)}
+#wave{position:absolute;left:50%;transform:translateX(-50%);top:calc(max(env(safe-area-inset-top),var(--st,0px)) + 84px);z-index:4;background:rgba(160,30,30,.88);border:2px solid #ffb0a0;border-radius:14px;padding:5px 12px;font-weight:900;font-size:13px;color:#fff;display:none;align-items:center;gap:6px;white-space:nowrap;box-shadow:0 3px 0 rgba(0,0,0,.4);pointer-events:none}#wave.on{display:flex;animation:wv .6s infinite alternate}#wave img{width:30px;height:30px;object-fit:contain}#wave small{font-size:11px;color:#ffe45c}@keyframes wv{to{transform:translateX(-50%) scale(1.05)}}
 #tut{position:fixed;inset:0;z-index:80;display:none}#tut.on{display:block}#tut.dim{background:rgba(0,0,0,.45)}#tutb{position:absolute;left:16px;right:16px;max-width:360px;margin:0 auto;background:#fff8e0;color:#2a2a3a;border:3px solid #e0a020;border-radius:16px;padding:10px 14px;font-weight:900;font-size:15px;line-height:1.5;box-shadow:0 6px 0 rgba(0,0,0,.35)}#tutb small{display:block;font-size:11px;color:#8a7a5a;margin-top:4px;text-align:right}#tuta{position:absolute;font-size:34px;animation:ta .5s infinite alternate;pointer-events:none;filter:drop-shadow(0 2px 2px #000)}@keyframes ta{to{transform:translateY(8px)}}.tutHL{position:absolute;border:3px solid #ffe45c;border-radius:14px;box-shadow:0 0 0 4px rgba(255,228,92,.35),0 0 18px #ffe45c;pointer-events:none;animation:hlp .5s infinite alternate}@keyframes hlp{to{transform:scale(1.06)}}
 #tease{margin:6px 4px 0;padding:6px 10px;border-radius:10px;background:rgba(0,0,0,.35);font-size:12px;font-weight:900;text-align:center;line-height:1.4;animation:tz 2.4s infinite}@keyframes tz{50%{background:rgba(80,20,40,.45)}}
 #skx{position:absolute;left:10px;bottom:calc(100% + 8px);display:flex;gap:8px;z-index:3}.skb{width:46px;height:46px;border-radius:50%;border:none;background:radial-gradient(circle,#ffd98f,#c07a1a);font-size:24px;position:relative;box-shadow:0 4px 0 #6a3a0a;overflow:hidden;padding:0}.skb .cd{position:absolute;left:0;right:0;bottom:0;background:rgba(0,0,0,.6)}.skb .ct{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:900;color:#fff}.skb.rdy{animation:hlp .7s infinite alternate}
@@ -105,7 +105,7 @@ html,body{margin:0;height:100%;background:#1b2238;font-family:"Hiragino Maru Got
 .msfx{position:absolute;font-weight:900;font-style:italic;-webkit-text-stroke:2px #111;paint-order:stroke fill;text-shadow:3px 3px 0 #111;letter-spacing:-2px;z-index:2;white-space:nowrap;pointer-events:none}
 .mend{position:absolute;right:16px;bottom:12px;font-weight:900;font-size:18px;color:#111;background:#fffbe6;border:2px solid #111;padding:4px 10px;z-index:5;animation:mendin .6s ease-out}@keyframes mendin{from{opacity:0;transform:translateX(20px)}}
 
-#combo{position:absolute;left:0;right:0;top:calc(env(safe-area-inset-top) + 80px);text-align:center;font-size:26px;color:#ffe45c;z-index:3;pointer-events:none;opacity:0}
+#combo{position:absolute;left:0;right:0;top:calc(max(env(safe-area-inset-top),var(--st,0px)) + 80px);text-align:center;font-size:26px;color:#ffe45c;z-index:3;pointer-events:none;opacity:0}
 #bhud .sm{border:none;border-radius:12px;background:rgba(0,0,0,.45);color:#fff;font:inherit;font-weight:900;padding:6px 10px;font-size:14px}
 #bot{flex:none;margin-top:auto;position:relative;background:linear-gradient(#2a3a3a,#1e2a2c);padding:8px 10px calc(env(safe-area-inset-bottom) + 8px);display:flex;flex-direction:column;justify-content:flex-start;gap:8px}
 #xp{display:flex;align-items:center;gap:6px}#ucap{flex:none;font-weight:900;font-size:13px;background:#0d1a2a;border-radius:12px;padding:3px 8px;min-width:62px;text-align:center}#ucap.full{background:#a83232;color:#fff}
@@ -430,14 +430,15 @@ const SCBGM={sad:['e1','e2','e7','e9','e12','e14','e17','f20','e21','e28','e29',
 function bgmCtx(){const inB=typeof B!=='undefined'&&B&&$('battle').classList.contains('on');if(inB){BG.tv=B.over?.18:BGV;return bgmTrack()}if($('home').classList.contains('on')){BG.tv=.38;return'home'}return null}const BGV=.45;
 const BG={a:null,k:null,tv:BGV,fade:null};
 function bgmTrack(){if(typeof B!=='undefined'&&B&&$('battle').classList.contains('on')){return'forest'}return null}
-function bgm(k){if(k&&!BGMF[k])k=null;if(k===BG.k){if(BG.a&&BG.a.paused&&!SV.mute)BG.a.play().catch(()=>{});return}const old=BG.a;BG.k=k;BG.a=null;if(old){bgFade(old,0,600,()=>{old.pause()})}if(!k)return;const a=new Audio(BGMF[k]);a.preload='auto';a.volume=0;a.muted=!!SV.mute;BG.a=a;
+function bgm(k){if(k&&!BGMF[k])k=null;if(k===BG.k){if(BG.a&&BG.a.paused&&!SV.mute&&!BG.a._out)BG.a.play().catch(()=>{});return}const old=BG.a;BG.k=k;BG.a=null;if(old){bgFade(old,0,600,()=>{old.pause()})}if(!k)return;const a=new Audio(BGMF[k]);a.preload='auto';a.volume=0;a.muted=!!SV.mute;BG.a=a;
  a.addEventListener('timeupdate',()=>{if(BG.a!==a||!a.duration)return;if(a.duration-a.currentTime<1.6&&!a._out){a._out=1;bgFade(a,0,1500,()=>{if(BG.a===a){a.currentTime=0;a._out=0;a.play().catch(()=>{});bgFade(a,BG.tv,1200)}})}});
  a.addEventListener('ended',()=>{if(BG.a===a){a.currentTime=0;a._out=0;a.play().catch(()=>{});bgFade(a,BG.tv,800)}});
- a.play().then(()=>bgFade(a,BG.tv,900)).catch(()=>{BG.pend=1})}
+ if(SV.mute){BG.pend=1;return}a.play().then(()=>bgFade(a,BG.tv,900)).catch(()=>{BG.pend=1})}
 function bgFade(a,to,ms,cb){const from=a.volume,t0=performance.now();clearInterval(a._fi);a._fi=setInterval(()=>{const p=Math.min(1,(performance.now()-t0)/ms);a.volume=Math.max(0,Math.min(1,from+(to-from)*p));if(p>=1){clearInterval(a._fi);cb&&cb()}},40)}
 function bgmVol(v){BG.tv=v;if(BG.a)bgFade(BG.a,v,500)}
 addEventListener('pointerdown',()=>{if(BG.a&&BG.a.paused&&!SV.mute){BG.a.play().then(()=>bgFade(BG.a,BG.tv,600)).catch(()=>{})}});
-setInterval(()=>{if(BG.a)BG.a.muted=!!SV.mute},400);setTimeout(()=>{if($('home').classList.contains('on')){BG.tv=.38;bgm('home')}},300);
+function bgmMuteSync(){if(!BG.a)return;BG.a.muted=!!SV.mute;if(SV.mute){if(!BG.a.paused)BG.a.pause()}else if(BG.a.paused){BG.a.play().then(()=>bgFade(BG.a,BG.tv,500)).catch(()=>{})}}
+setInterval(()=>{if(BG.a&&SV.mute&&!BG.a.paused)BG.a.pause()},400);setTimeout(()=>{if($('home').classList.contains('on')){BG.tv=.38;bgm('home')}},300);
 // ---------------- story ----------------
 const SPK={leo:['prince','レオ'],garde:['garde','老騎士ガルド'],mina:['archer','弓兵ミナ'],orm:['mage','魔法使いオルム'],voice:['shade','？？？'],nox:['adv','影の参謀ノクス'],wyvern:['wyvern','ワイバーン'],ogre:['ogre','大鬼'],frost:['frost','氷の巨人'],god:['god','山の守り神'],arto:[null,'アルト'],king:['king','剣王ゼファー'],queen:['queen','母セレナ'],lilia:['lilia','リリア'],mask:['mask','仮面の騎士'],zen:[null,'ゼン'],pharaoh:['pharaoh','砂漠の王'],maou:['maou','魔王'],gob:['goblin','ゴブリン'],
  shield:['shield','盾兵ボルグ'],spear:['spear','槍兵リン'],rider:['rider','騎兵カイ'],priest:['priest','僧侶セラ'],bomber:['bomber','爆弾兵ドン'],samurai:['samurai','武士ムサシ'],golem:['golem','岩の巨人'],dragon:['dragon','竜騎士アイラ']};
@@ -606,7 +607,7 @@ function renderMap(){if(viewA==null)viewA=areaOf(SV.stage);const A=AREAS[viewA],
  dailyInit();const cl=SV.daily.m.some(m=>m.p>=MISS[m.id][1]&&!m.c)||(SV.daily.m.every(m=>m.c)&&!SV.daily.bonus);$('ddot').style.display=cl?'block':'none';$('hmute').textContent=SV.mute?'🔇':'🔊';$('hstar').textContent=totStars();$('hgold').textContent=SV.gold||0;$('hgold').parentElement.style.display=(SV.gold||unl('rare'))?'':'none'}
 const fmtT=t=>Math.floor(t/60)+':'+String(Math.floor(t%60)).padStart(2,'0');
 $('aPrev').onclick=()=>{viewA=Math.max(0,viewA-1);renderMap()};$('aNext').onclick=()=>{viewA=Math.min(3,areaOf(SV.stage),viewA+1);renderMap()};
-$('hmute').onclick=()=>{SV.mute=SV.mute?0:1;save();renderHome()};
+$('hmute').onclick=()=>{SV.mute=SV.mute?0:1;save();renderHome();bgmMuteSync()};
 function stageModal(s){const r=ruleOf(s),b=bossOf(s),st=SV.stars[s]||0,tl=tlimOf(s);modal(`<div class="ol" style="font-size:22px">${b?'👹 ':''}${stName(s)}</div><div style="font-size:12px;opacity:.8">ステージ${s}</div>
  ${r?`<div class="mis" style="background:#5a3a6a"><span style="font-size:24px">${r[1]}</span><span><b>特殊ルール：${r[2]}</b><br>${r[0]==='time'?tLoseOf(s)+'秒以内に塔をこわせ':r[3]}</span></div>`:''}${b?`<div class="mis" style="background:#6a2a2a"><span style="font-size:24px">👹</span><span><b>ボス：${EN[b].n}</b><br>途中で強いボスが出てくる！</span></div>`:''}
  <div style="text-align:left;margin:10px 0;line-height:1.9">${['勝利する',`城の体力70%以上で勝利`,`${tl}秒以内に勝利`].map((c,i)=>`${i<st?'⭐':'☆'} ${c}`).join('<br>')}</div>
@@ -696,7 +697,7 @@ $('buy10').onclick=()=>{if(SV.coin<900)return;SV.coin-=900;gacha(10)};
 // ---------------- battle ----------------
 const cv=$('bc'),ctx=cv.getContext('2d');const BW=400,BH=430,GY0=318,GY1=372,PCX=40,ECX=360;
 let B=null,bg=null,bgA=-1,last=0,spdMul=1,DPR=1;
-let VS={s:1,ox:0,oy:0};function resize(){DPR=Math.min(2,devicePixelRatio||1);const w=innerWidth,vh=(window.visualViewport&&visualViewport.height)||innerHeight,bot=$('bot').offsetHeight||300;let h=Math.max(180,Math.min(w*BH/BW*1.7,vh-bot));cv.style.height=h+'px';cv.width=Math.round(w*DPR);cv.height=Math.round(h*DPR);let sc=w/BW,ox=0,oy=h-BH*sc;const MAXC=150;if(oy<-MAXC*sc){sc=h/(BH-MAXC);ox=(w-BW*sc)/2;oy=h-BH*sc}VS={s:sc,ox,oy};bg=null}
+let VS={s:1,ox:0,oy:0};function resize(){DPR=Math.min(2,devicePixelRatio||1);const w=innerWidth,vh=(window.visualViewport&&visualViewport.height)||innerHeight,bot=$('bot').offsetHeight||300;let h=Math.max(180,Math.min(w*BH/BW*1.7,vh-bot));cv.style.height=h+'px';cv.width=Math.round(w*DPR);cv.height=Math.round(h*DPR);let sc=w/BW,ox=0,oy=h-BH*sc;const MAXC=150;if(oy<-MAXC*sc){sc=h/(BH-MAXC);ox=(w-BW*sc)/2;oy=h-BH*sc}VS={s:sc,ox,oy};$('battle').style.setProperty('--st',Math.max(0,oy-10)+'px');bg=null}
 if(window.visualViewport)visualViewport.addEventListener('resize',()=>{if($('battle').classList.contains('on'))resize()});
 addEventListener('resize',resize);
 function buildBg(ai){if(ai==null)ai=B&&B.area!=null?B.area:0;const A=AREAS[ai];const c=document.createElement('canvas');c.width=BW*2;c.height=BH*2;const g=c.getContext('2d');g.scale(2,2);
@@ -833,7 +834,7 @@ function castSkill(sk){const P=skPow(sk),L5=skLv(sk)>=SKMAX;
  else if(false){}
  if(sk==='freeze'){for(const o of B.units)if(o.tz){o.tz=null;o.skT=6;toast('⏳ 大技を止めた！')}}
  if(sk==='rush'){B.rushT=6*P;if(L5)B.meat=Math.min(B.mcap,B.meat+5);toast('📯 全員突撃！')}else if(sk==='freeze'){B.frzT=4*P;B.frzX=L5?1.5:1;toast('⏳ 時間停止！')}}
-$('bmute').onclick=()=>{SV.mute=SV.mute?0:1;save();$('bmute').textContent=SV.mute?'🔇':'🔊'};
+$('bmute').onclick=()=>{SV.mute=SV.mute?0:1;save();$('bmute').textContent=SV.mute?'🔇':'🔊';bgmMuteSync()};
 $('spd').onclick=()=>{spdMul=spdMul===1?2:1;$('spd').textContent=spdMul+'x'};
 $('quit').onclick=()=>{if(!B||B.over)return;B.paused=true;modal(`<div class="ol" style="font-size:22px;margin-bottom:12px">一時停止</div><div style="display:flex;flex-direction:column;gap:12px;align-items:center"><button class="btn blue" id="resume">▶ つづける</button><button class="btn gray" id="giveup">${B.endless?'🏁 ここで終わる':'🏳️ あきらめる'}</button>${B.endless?`<div style="font-size:12px;opacity:.85">ここまでの記録（${Math.floor(B.t)}秒）とコインはもらえる</div>`:''}</div>`);$('resume').onclick=()=>{closeModal();B.paused=false;last=performance.now()};$('giveup').onclick=()=>{closeModal();endBattle(false)}};
 // loop
