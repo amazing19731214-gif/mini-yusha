@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ja"><head><meta charset="utf-8">
+<html lang="ja"><head><meta charset="utf-8"><link rel="manifest" href="manifest.json"><link rel="apple-touch-icon" href="icon-180.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="ミニ勇者"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="theme-color" content="#1b2340">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <title>ミニ勇者の大行進</title>
 <style>
@@ -394,6 +394,8 @@ function sfx(n){const now=performance.now();if(sfxT[n]&&now-sfxT[n]<({hit:70,sho
  else if(n==='bolt'){noise(.5,.3,2400);tone(80,30,.5,'sawtooth',.08)}else if(n==='lvl')[523,659,784,1047].forEach((f,i)=>tone(f,f,.12,'square',.05,i*.08));else if(n==='coin')[988,1319].forEach((f,i)=>tone(f,f,.1,'square',.04,i*.07));
  else if(n==='win')fanfare();else if(n==='star1'||n==='star2'||n==='star3'){const k=+n[4];const base=[0,88,91,96][k];nt(NF(base),0,.18,'sine',.09,{att:.002,sus:.25,rel:.5});nt(NF(base+12),0,.1,'sine',.035,{att:.002,sus:.2,rel:.35});nt(NF(base+19),0,.06,'triangle',.02,{att:.002,sus:.2,rel:.25});if(k===3){[100,103,108,112].forEach((m,i)=>nt(NF(m),.12+i*.05,.1,'sine',.025,{att:.002,sus:.3,rel:.3}));hiss(.05,.6,.08,'highpass',7000)}}else if(n==='lose')[392,330,262,196].forEach((f,i)=>tone(f,f,.25,'triangle',.07,i*.18));else if(n==='skill')[660,880,1320].forEach((f,i)=>tone(f,f,.12,'sine',.07,i*.05));else if(n==='crit')tone(1400,700,.08,'square',.05);else if(n==='rare'){[0,.08,.16,.24,.32].forEach((d,i)=>tone([1047,1319,1568,2093,2637][i],[1047,1319,1568,2093,2637][i],.12,'triangle',.05,d))}else if(n==='kill'){tone(620,1240,.06,'triangle',.035)}else if(n==='warn'){[0,.22,.44].forEach(d=>{tone(330,320,.16,'sawtooth',.05,d);tone(440,430,.16,'square',.03,d)})}else if(n==='evo')[392,523,659,784,1047,1319].forEach((f,i)=>tone(f,f,.2,'triangle',.07,i*.1))}
 addEventListener('pointerdown',()=>ac(),{once:true});
+// PWA (GitHub Pages only)
+if(/github\.io$/.test(location.hostname)){try{const H=document.head,add=(t,o)=>{const e=document.createElement(t);Object.assign(e,o);H.appendChild(e)};add('link',{rel:'manifest',href:'manifest.json'});add('link',{rel:'apple-touch-icon',href:'icon-180.png'});add('meta',{name:'apple-mobile-web-app-capable',content:'yes'});add('meta',{name:'mobile-web-app-capable',content:'yes'});add('meta',{name:'apple-mobile-web-app-title',content:'ミニ勇者'});add('meta',{name:'apple-mobile-web-app-status-bar-style',content:'black-translucent'});add('meta',{name:'theme-color',content:'#1b2340'});if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{})}catch(e){}}
 // ---------------- BGM ----------------
 const BGMF={forest:'forest.mp3',home:'home.mp3',sad:'sad.mp3'};
 const SCBGM={sad:['e1','e2','e7','e9','e12','e14','e17','f20','e21','e28','e29','e35','e36','e39','f40']};const scTrack=id=>/^[ef]\d/.test(id)?'sad':null;
