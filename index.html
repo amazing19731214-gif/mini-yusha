@@ -948,7 +948,7 @@ function shareModal(){const ready=shareReady(),url=invUrl(),tx=encodeURIComponen
  <button class="btn gray" id="shC" style="font-size:14px">🔗 招待URLをコピー</button></div>
  <div style="font-size:11px;opacity:.7;word-break:break-all;margin-bottom:6px">${url}</div>
  <div style="font-size:11px;opacity:.7;margin-bottom:8px">あなたの招待コード：<b>${myPid()}</b></div>
- <button class="btn gray" onclick="closeModal()">とじる</button>`);
+ ${isStandalone()?'':'<button class="btn blue" style="font-size:13px;margin-bottom:8px" onclick="a2Modal()">📲 アプリとしてホーム画面に追加</button><br>'}<button class="btn gray" onclick="closeModal()">とじる</button>`);
  $('shX').onclick=()=>{try{window.open('https://x.com/intent/post?text='+tx+'&url='+u,'_blank')}catch(e){}setTimeout(shareReward,800)};
  const sS=$('shS');if(sS)sS.onclick=async()=>{try{await navigator.share({title:'ミニ勇者の大行進',text:SHARE_TX,url});shareReward()}catch(e){}};
  $('shC').onclick=async()=>{let ok=false;try{await navigator.clipboard.writeText(url);ok=true}catch(e){try{const t=document.createElement('textarea');t.value=url;document.body.appendChild(t);t.select();ok=document.execCommand('copy');t.remove()}catch(e2){}}toast(ok?'📋 コピーしました！':'長押しでコピーしてね')}}
@@ -958,5 +958,24 @@ $('hshare').onclick=shareModal;
 (()=>{let c=null;try{c=new URLSearchParams(location.search).get('inv')}catch(e){}if(!c)return;c=c.toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,8);try{history.replaceState(null,'',location.pathname+location.hash)}catch(e){}
  if(!c||SV.invBy||c===myPid())return;SV.invBy=c;giveEq('pendantf');SV.coin+=1000;save();
  const showGift=()=>{const st=$('story');if(!$('home').classList.contains('on')||(st&&st.classList.contains('on'))||$('modal').classList.contains('on')){setTimeout(showGift,1000);return}const e=EQ.pendantf;sfx('evo');modal(`<div class="ol" style="font-size:22px">💞 招待プレゼント！</div><div style="font-size:13px;margin:4px 0">友だちの招待で来てくれてありがとう！</div><div style="font-size:60px;margin:8px 0;animation:pop .5s">${e.ic}</div><div style="color:${RAR[e.r][1]};font-weight:900">${RAR[e.r][0]}・招待限定</div><div class="ol" style="font-size:20px">${e.n}</div><div style="margin:6px 0 4px;font-size:13px">${e.d}</div><div style="font-weight:900;margin-bottom:12px">🪙 +1000</div><div style="font-size:12px;opacity:.85;margin-bottom:10px">「👑レオ」画面のお守りにつけられます。</div><button class="btn" onclick="closeModal()">OK</button>`);renderHome()};setTimeout(showGift,1500)})();
+
+// ---------------- ホーム画面に追加の案内 ----------------
+let A2P=null;window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();A2P=e});
+const isStandalone=()=>{try{return matchMedia('(display-mode: standalone)').matches||matchMedia('(display-mode: fullscreen)').matches||navigator.standalone===true}catch(e){return false}};
+function a2Env(){const u=navigator.userAgent||'';const ios=/iPhone|iPad|iPod/.test(u)||(/Macintosh/.test(u)&&navigator.maxTouchPoints>1);const and=/Android/.test(u);
+ const inapp=/Instagram|FBAN|FBAV|FB_IAB|Line\/|TikTok|musical_ly|BytedanceWebview|Twitter/i.test(u);
+ const iosOther=ios&&/CriOS|FxiOS|EdgiOS/.test(u);return{ios,and,inapp,iosOther,mobile:ios||and}}
+function a2Modal(){const E=a2Env();let body='';
+ const step=(n,t)=>`<div style="display:flex;gap:8px;align-items:flex-start;text-align:left;margin:7px 0"><b style="flex:none;width:24px;height:24px;border-radius:50%;background:#ffc61a;color:#5a3a10;display:flex;align-items:center;justify-content:center">${n}</b><div style="font-size:14px;line-height:1.5">${t}</div></div>`;
+ if(E.inapp){body=`<div style="font-size:14px;margin:6px 0 10px">今はアプリの中のブラウザで開いています。<br>ここで遊ぶと<b style="color:#ffe45c">セーブが消えやすい</b>ので、${E.ios?'Safari':'Chrome'}で開き直してね。</div>${step(1,'画面の右上か右下の <b>︙</b> や <b>…</b> を押す')}${step(2,`「${E.ios?'Safariで開く':'ブラウザで開く'}」を選ぶ`)}${step(3,'開いたら、もう一度この案内からホーム画面に追加')}`}
+ else if(E.ios){body=(E.iosOther?`<div style="font-size:13px;margin:4px 0 8px;color:#ffe45c">※iPhoneでは <b>Safari</b> で開くのがおすすめです</div>`:'')+`${step(1,'画面の下（または上）の <b>共有ボタン</b> <span style="display:inline-block;border:2px solid #fff;border-radius:4px;padding:0 4px;font-size:12px">□↑</span> を押す')}${step(2,'下にスクロールして「<b>ホーム画面に追加</b>」を押す')}${step(3,'右上の「<b>追加</b>」を押す')}<div style="font-size:12px;opacity:.85;margin-top:8px">⚠ Safariで遊んだセーブと、ホーム画面のアイコンのセーブは別々になります。追加したら、これからはアイコンから遊んでね。</div>`}
+ else if(A2P){body=`<div style="font-size:14px;margin:6px 0 12px">ボタンを押すだけで、アプリのようにホーム画面に置けます。</div><button class="btn" id="a2go" style="margin-bottom:6px">📲 ホーム画面に追加する</button>`}
+ else{body=`${step(1,'右上の <b>︙</b>（メニュー）を押す')}${step(2,'「<b>アプリをインストール</b>」か「<b>ホーム画面に追加</b>」を押す')}${step(3,'「<b>インストール</b>」（または「追加」）を押す')}`}
+ modal(`<div class="ol" style="font-size:21px">📲 アプリみたいに遊ぼう！</div><div style="font-size:13px;opacity:.9;margin:4px 0 8px">ホーム画面に追加すると、アイコンから全画面ですぐ遊べます（無料）</div>${body}<button class="btn gray" style="margin-top:10px" onclick="closeModal()">あとで</button>`);
+ const g=$('a2go');if(g)g.onclick=async()=>{try{A2P.prompt();const r=await A2P.userChoice;A2P=null;if(r&&r.outcome==='accepted'){closeModal();toast('📲 ホーム画面に追加しました！')}}catch(e){}}}
+(()=>{let inFrame=false;try{inFrame=window.self!==window.top}catch(e){inFrame=true}if(inFrame||isStandalone())return;
+ const E=a2Env();if(!E.mobile)return;let n=0;try{n=+(localStorage.getItem('my_a2hs_n')||0);localStorage.setItem('my_a2hs_n',n+1)}catch(e){}
+ if(!(n===0||n===2||n===6))return; // 1回目・3回目・7回目に開いたときだけ
+ const tryShow=(t)=>{const st=$('story');if(!$('home').classList.contains('on')||(st&&st.classList.contains('on'))||$('modal').classList.contains('on')||$('tut').classList.contains('on')){if(t<120)setTimeout(()=>tryShow(t+1),1000);return}a2Modal()};setTimeout(()=>tryShow(0),4000)})();
 renderHome();
 </script></body></html>
