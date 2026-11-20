@@ -27,7 +27,9 @@ html,body{margin:0;height:100%;background:#1b2238;font-family:"Hiragino Maru Got
 .nav button{flex:1;border:none;border-radius:14px;background:#2c3658;color:#cfd8f5;font:inherit;font-weight:900;font-size:13px;padding:6px 0 8px;cursor:pointer}
 .nav button b{display:block;font-size:20px}
 .nav button.on{background:linear-gradient(#ffe45c,#ffc61a);color:#5a3a10}
-.ibtn{border:none;border-radius:12px;background:rgba(0,0,0,.35);color:#fff;font:inherit;font-weight:900;font-size:18px;padding:5px 10px;position:relative;cursor:pointer}.ibtn .dot{position:absolute;right:2px;top:2px;width:10px;height:10px;border-radius:50%;background:#e2442b;display:none}
+.ibtn{border:none;border-radius:12px;background:rgba(0,0,0,.35);color:#fff;font:inherit;font-weight:900;font-size:18px;padding:5px 10px;position:relative;cursor:pointer}.top{gap:4px}.top .coin{font-size:15px;padding:3px 9px 3px 3px;gap:4px;white-space:nowrap;flex-shrink:1;min-width:0}.top .coin i{width:21px;height:21px}.top .ibtn{padding:5px 7px;font-size:16px;flex-shrink:0}
+.shbtn{position:relative;font-size:14px;padding:7px 10px;border-radius:14px;background:linear-gradient(#ff9ad5,#e0569f);color:#fff;box-shadow:0 4px 0 #a3306c,0 5px 8px rgba(0,0,0,.3)}.shbtn .dot{position:absolute;right:6px;top:4px;width:10px;height:10px;border-radius:50%;background:#e2442b;display:none;box-shadow:0 0 0 2px #fff}
+.ibtn .dot{position:absolute;right:2px;top:2px;width:10px;height:10px;border-radius:50%;background:#e2442b;display:none}
 .area{display:flex;align-items:center;gap:8px;border-radius:16px;padding:5px 6px;box-shadow:0 5px 0 rgba(0,0,0,.35),inset 0 0 0 3px rgba(255,255,255,.12)}
 .nodes{display:grid;grid-template-columns:repeat(5,1fr);gap:min(1.6vh,12px) 6px;justify-items:center}
 .node{width:min(15vw,7.6vh,58px);height:min(15vw,7.6vh,58px);border-radius:50%;background:linear-gradient(#6f8ad6,#3a4f9a);box-shadow:0 4px 0 #26346a;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:900;font-size:18px;position:relative;cursor:pointer}
@@ -173,6 +175,7 @@ html,body{margin:0;height:100%;background:#1b2238;font-family:"Hiragino Maru Got
   <button class="btn" id="go" style="font-size:20px;padding:11px 10px;width:100%">⚔️ 出撃！</button>
   <div class="hrow"><button class="btn blue sub" id="hEnd">♾️ 無限<small id="hEndB"></small></button><button class="btn blue sub" id="hSkill"></button><button class="btn sub" id="chestB"></button></div>
   <div class="mdeck" id="hdeck"></div>
+  <button class="btn shbtn" id="hshare">📣 宣伝してごほうびをもらう<span class="dot" id="sdot"></span></button>
  </div>
  <div id="pg-cards" class="page">
   <div class="h2 ol">🃏 デッキ（タップで編成）</div>
@@ -329,6 +332,8 @@ const EQ={
  holyarm:{r:'E',s:'a',n:'聖なるよろい',ic:'✝️',d:'体力+30%、まわりの味方を少しずつ回復',hpx:1.3,haura:1},
  dking:{r:'L',s:'a',n:'竜王のよろい',ic:'🐲',d:'体力+90%、少しずつ回復',hpx:1.9,regen:.015},
  clover:{r:'R',s:'c',n:'四つ葉のクローバー',ic:'🍀',d:'勝つと必ずカードが手に入る',luck:1},
+ megaphone:{r:'R',s:'c',n:'応援のメガホン',ic:'📣',d:'攻撃+10%、体力+10%（宣伝のお礼）',atkx:1.1,hpx:1.1,ex:'share'},
+ pendantf:{r:'R',s:'c',n:'友情のペンダント',ic:'💞',d:'攻撃の速さ+15%、体力+10%（招待のプレゼント）',spdx:1.15,hpx:1.1,ex:'inv'},
  banner:{r:'E',s:'c',n:'王国の軍旗',ic:'🚩',d:'レオがいる間、味方全員の攻撃+12%',banner:1},
  hglass:{r:'R',s:'c',n:'砂時計',ic:'⏳',d:'バトル開始時の肉+10',smeat:10},
  phoenix:{r:'L',s:'c',n:'不死鳥の羽',ic:'🪽',d:'レオが倒れても1回だけすぐ復活',phx:1},
@@ -337,7 +342,7 @@ const EQ={
  crown:{r:'L',s:'c',n:'砂漠の王冠',ic:'👑',d:'バトル中のXP+50%（パワーアップが増える）',xpx:1.5,from:['pharaoh','我が国の王冠だ。そなたなら、正しく使えよう。']}};
 const RAR={N:['ノーマル','#cfd8f5',150],R:['レア','#ffd75a',300],E:['エピック','#d0a8ff',600],L:['レジェンド','#ffb3d9',1200]},EVMAX=5;
 const evOf=k=>((leoSave().ev||{})[k]||0),evCost=k=>(evOf(k)+1)*RAR[EQ[k].r][2];
-function randEq(){const L=leoSave(),story=new Set(Object.values(EQDROP)),pool=Object.keys(EQ).filter(k=>!story.has(k)&&!L.inv.includes(k)&&k!=='wood'&&k!=='leather');if(!pool.length)return null;const w=k=>({N:6,R:5,E:2.5,L:.7})[EQ[k].r];let t=pool.reduce((a,k)=>a+w(k),0)*R();for(const k of pool){t-=w(k);if(t<=0)return k}return pool[0]}
+function randEq(){const L=leoSave(),story=new Set(Object.values(EQDROP)),pool=Object.keys(EQ).filter(k=>!EQ[k].ex&&!story.has(k)&&!L.inv.includes(k)&&k!=='wood'&&k!=='leather');if(!pool.length)return null;const w=k=>({N:6,R:5,E:2.5,L:.7})[EQ[k].r];let t=pool.reduce((a,k)=>a+w(k),0)*R();for(const k of pool){t-=w(k);if(t<=0)return k}return pool[0]}
 const EQDROP={3:'mina',5:'horn',8:'meat',10:'fire',13:'pendant',15:'knight',20:'mirror',23:'dscale',29:'orm',30:'crown',35:'garde',40:'holy'};
 const LEOMAX=30,leoNeed=l=>30+l*25;
 function leoSave(){SV.leo=SV.leo||{lv:1,xp:0,eq:{w:'wood',a:'leather',c:null},inv:['wood','leather']};return SV.leo}
@@ -625,7 +630,7 @@ function renderLeo(){const L=leoSave(),st=leoStat(),need=leoNeed(L.lv),sl={w:'�
  const P=$('pg-leo');P.innerHTML=h;P.querySelectorAll('[data-sk]').forEach(b=>b.onclick=()=>{const k=b.dataset.sk,ls=skList();if(ls.includes(k)){if(ls.length>1)ls.splice(ls.indexOf(k),1);else{toast('技は1つ以上えらんでね');return}}else{if(ls.length>=skSlots()){if(skSlots()===1)ls[0]=k;else{toast('枠がいっぱい！ 先にどれかを外そう');return}}else ls.push(k)}SV.skills=ls;SV.skill=ls[0];save();renderHome()});
  P.querySelectorAll('[data-skup]').forEach(b=>b.onclick=()=>{const k=b.dataset.skup,lv=skLv(k),c=SKCOST[lv];if(lv>=SKMAX||SV.coin<c)return;SV.coin-=c;SV.skLv=SV.skLv||{};SV.skLv[k]=lv+1;save();sfx('lvl');toast(`${KS[k].ic} ${KS[k].n} Lv${lv+1}！${lv+1>=SKMAX?' ★'+KL5[k]:''}`);renderHome()});P.querySelectorAll('[data-slot]').forEach(e=>e.onclick=()=>eqModal(e.dataset.slot))}
 function eqModal(slot){const L=leoSave();L.ev=L.ev||{};const items=L.inv.filter(k=>EQ[k].s===slot),all=Object.keys(EQ).filter(k=>EQ[k].s===slot).sort((a,b)=>'NREL'.indexOf(EQ[a].r)-'NREL'.indexOf(EQ[b].r)),story=new Set(Object.values(EQDROP));
- modal(`<div class="ol" style="font-size:22px;margin-bottom:4px">${{w:'⚔️ 武器',a:'🛡️ よろい',c:'💎 お守り'}[slot]}</div><div style="font-size:11px;opacity:.8;margin-bottom:6px">持っている装備 ${items.length}/${all.length}　強化すると${slot==='c'?'攻撃と体力':slot==='w'?'攻撃':'体力'}+${slot==='c'?4:8}%ずつ</div>${all.map(k=>{const e=EQ[k],r=RAR[e.r],have=items.includes(k),on=L.eq[slot]===k,drop=Object.keys(EQDROP).find(s=>EQDROP[s]===k),ev=L.ev[k]||0;return `<div class="mis" style="${on?'box-shadow:inset 0 0 0 3px #ffe45c':''}${have?'':';opacity:.45'};border-left:5px solid ${r[1]}"><span style="font-size:26px">${have?e.ic:'❔'}</span><span style="flex:1"><b>${have?e.n:'？？？'}${ev?` <span style="color:#7dff9a">+${ev}</span>`:''}</b> <span style="font-size:10px;color:${r[1]}">${r[0]}</span><br><span style="font-size:12px">${have?e.d:drop?`ステージ${drop}を初めてクリアで手に入る`:'ボス・宝箱・装備箱から手に入る'}</span></span>${have?`<span style="display:flex;flex-direction:column;gap:4px"><button class="btn" data-eq="${k}" style="font-size:12px;padding:5px 8px">${on?'外す':'つける'}</button>${ev<EVMAX?`<button class="btn blue" data-ev="${k}" style="font-size:11px;padding:4px 6px" ${SV.coin>=evCost(k)?'':'disabled'}>強化🪙${evCost(k)}</button>`:'<span style="font-size:11px;color:#7dff9a;text-align:center">MAX</span>'}</span>`:''}</div>`}).join('')}<button class="btn gray" style="margin-top:8px" onclick="closeModal()">とじる</button>`);
+ modal(`<div class="ol" style="font-size:22px;margin-bottom:4px">${{w:'⚔️ 武器',a:'🛡️ よろい',c:'💎 お守り'}[slot]}</div><div style="font-size:11px;opacity:.8;margin-bottom:6px">持っている装備 ${items.length}/${all.length}　強化すると${slot==='c'?'攻撃と体力':slot==='w'?'攻撃':'体力'}+${slot==='c'?4:8}%ずつ</div>${all.map(k=>{const e=EQ[k],r=RAR[e.r],have=items.includes(k),on=L.eq[slot]===k,drop=Object.keys(EQDROP).find(s=>EQDROP[s]===k),ev=L.ev[k]||0;return `<div class="mis" style="${on?'box-shadow:inset 0 0 0 3px #ffe45c':''}${have?'':';opacity:.45'};border-left:5px solid ${r[1]}"><span style="font-size:26px">${have?e.ic:'❔'}</span><span style="flex:1"><b>${have?e.n:'？？？'}${ev?` <span style="color:#7dff9a">+${ev}</span>`:''}</b> <span style="font-size:10px;color:${r[1]}">${r[0]}</span><br><span style="font-size:12px">${have?e.d:e.ex==='share'?'📣 ホームの宣伝ボタンから手に入る':e.ex==='inv'?'友だちの招待URLから始めると手に入る':drop?`ステージ${drop}を初めてクリアで手に入る`:'ボス・宝箱・装備箱から手に入る'}</span></span>${have?`<span style="display:flex;flex-direction:column;gap:4px"><button class="btn" data-eq="${k}" style="font-size:12px;padding:5px 8px">${on?'外す':'つける'}</button>${ev<EVMAX?`<button class="btn blue" data-ev="${k}" style="font-size:11px;padding:4px 6px" ${SV.coin>=evCost(k)?'':'disabled'}>強化🪙${evCost(k)}</button>`:'<span style="font-size:11px;color:#7dff9a;text-align:center">MAX</span>'}</span>`:''}</div>`}).join('')}<button class="btn gray" style="margin-top:8px" onclick="closeModal()">とじる</button>`);
  document.querySelectorAll('[data-eq]').forEach(b=>b.onclick=()=>{const k=b.dataset.eq;L.eq[slot]=L.eq[slot]===k?null:k;save();closeModal();renderHome()});
  document.querySelectorAll('[data-ev]').forEach(b=>b.onclick=()=>{const k=b.dataset.ev,c=evCost(k);if(SV.coin<c||(L.ev[k]||0)>=EVMAX)return;SV.coin-=c;L.ev[k]=(L.ev[k]||0)+1;save();sfx('lvl');toast(`⬆️ ${EQ[k].n} +${L.ev[k]}`);renderHome();eqModal(slot)})}
 $('hdaily').onclick=dailyModal;
@@ -921,5 +926,37 @@ function endBattle(win){if(B.over)return;B.over=true;bgmVol(.18);{const w=$('wav
   <div class="rbtn">${B.endless?`<button class="btn" id="rRetry">もう一度</button>`:win?`<button class="btn" id="rNext">次のステージへ ▶</button>`:`<button class="btn" id="rRetry">もう一度</button>`}<button class="btn gray" id="rHome">🏠</button></div>`;$('res').scrollTop=0;if(win&&!B.endless)for(let i=0;i<stars;i++)setTimeout(()=>sfx('star'+(i+1)),300+i*250+200);$('res').classList.add('on');
   const sn=SV.seen||{},post=win&&!B.endless?(s===40?(stars===3&&!sn.f40t?'f40t':!sn.f40&&!sn.f40t?'f40':null):(POST[s]&&!sn[POST[s]]?POST[s]:null)):null,jn=B.join;const wrap=f=>()=>{$('res').classList.remove('on');const ed2=B.eqDrop;const go0=()=>{if(jn||joinQ.length){if(jn)joinQ.push('j_'+jn);const run=()=>{const q=joinQ.shift();if(q)playScene(q,run);else f()};run()}else f()};const go=()=>{const it=ed2&&EQ[ed2];if(it&&it.from){SC['eq_'+ed2]={t:`${it.ic} ${it.n}`,a:areaOf(s),l:[it.from[0]==='leo'?['leo',it.from[1]]:[it.from[0],it.from[1],'r'],['',`${it.n}を手に入れた。（${it.d}）`]]};playScene('eq_'+ed2,go0)}else go0()};post?playScene(post,go):go()};const h=()=>{B=null;viewA=null;show('home');renderHome()};$('rHome').onclick=wrap(h);const ed=B.endless;const n=$('rNext')||$('rRetry');n.onclick=wrap(()=>{ed?newBattle(0,true):startStage(win?SV.stage:s)})},win||B.endless?1500:1100)}
 $('go').onclick=()=>startStage(SV.stage);
+
+// ---------------- 宣伝・招待 ----------------
+const GAME_URL='https://amazing19731214-gif.github.io/mini-yusha/';
+function myPid(){if(!SV.pid){const c='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';let t='';for(let i=0;i<6;i++)t+=c[Math.floor(Math.random()*c.length)];SV.pid=t;save()}return SV.pid}
+const invUrl=()=>GAME_URL+'?inv='+myPid();
+const weekKey=()=>{const d=new Date();return Math.floor((Math.floor((d-d.getTimezoneOffset()*6e4)/864e5)+3)/7)};
+const shareReady=()=>SV.shareW!==weekKey();
+const SHARE_TX='ちびっこ勇者たちで魔王軍から城を守る！ 無料ブラウザゲーム「ミニ勇者の大行進」を遊んでるよ⚔️ このURLから始めるとプレゼントがもらえる🎁 #ミニ勇者の大行進 #フリーゲーム';
+function giveEq(k){const L=leoSave();if(L.inv.includes(k))return false;L.inv.push(k);return true}
+function shareReward(){if(!shareReady())return;SV.shareW=weekKey();const first=!SV.shareN;SV.shareN=(SV.shareN||0)+1;
+ if(first){giveEq('megaphone');SV.coin+=500;save();sfx('evo');const e=EQ.megaphone;modal(`<div class="ol" style="font-size:22px">📣 宣伝ありがとう！</div><div style="font-size:60px;margin:8px 0;animation:pop .5s">${e.ic}</div><div style="color:${RAR[e.r][1]};font-weight:900">${RAR[e.r][0]}・宣伝限定</div><div class="ol" style="font-size:20px">${e.n}</div><div style="margin:6px 0 4px;font-size:13px">${e.d}</div><div style="font-weight:900;margin-bottom:12px">🪙 +500</div><div style="font-size:12px;opacity:.85;margin-bottom:10px">レオのお守りにつけられます。<br>来週からも毎週1回、宣伝でごほうびがもらえます。</div><button class="btn" onclick="closeModal()">OK</button>`)}
+ else{SV.coin+=300;save();gacha(1,'📣 今週の宣伝ごほうび！ 🪙+300')}renderHome()}
+function shareModal(){const ready=shareReady(),url=invUrl(),tx=encodeURIComponent(SHARE_TX),u=encodeURIComponent(url);
+ modal(`<div class="ol" style="font-size:22px">📣 ゲームを宣伝する</div><div style="font-size:12px;opacity:.85;margin:4px 0 8px">あなた専用の招待URLで宣伝しよう！</div>
+ <div class="mis" style="display:block;background:#5a4a1a"><b>${ready?(SV.shareN?'🎁 今週のごほうび：🪙300＋カード1枚':'🎁 はじめての宣伝：限定お守り「📣応援のメガホン」＋🪙500'):'✅ 今週のごほうびはもらいました'}</b><div style="font-size:11px;opacity:.85;margin-top:3px">${ready?'下のボタンで宣伝するともらえます':'また来週（月曜）から宣伝でもらえます'}</div></div>
+ <div class="mis" style="display:block"><b>💞 招待URLから始めた友だちには</b><div style="font-size:12px;margin-top:3px">限定お守り「友情のペンダント」＋🪙1000 がプレゼントされます</div></div>
+ <div style="display:flex;flex-direction:column;gap:8px;margin:10px 0">
+ <button class="btn" id="shX">𝕏（ツイッター）で宣伝</button>
+ ${navigator.share?'<button class="btn blue" id="shS">LINEなど、ほかのアプリで送る</button>':''}
+ <button class="btn gray" id="shC" style="font-size:14px">🔗 招待URLをコピー</button></div>
+ <div style="font-size:11px;opacity:.7;word-break:break-all;margin-bottom:6px">${url}</div>
+ <div style="font-size:11px;opacity:.7;margin-bottom:8px">あなたの招待コード：<b>${myPid()}</b></div>
+ <button class="btn gray" onclick="closeModal()">とじる</button>`);
+ $('shX').onclick=()=>{try{window.open('https://x.com/intent/post?text='+tx+'&url='+u,'_blank')}catch(e){}setTimeout(shareReward,800)};
+ const sS=$('shS');if(sS)sS.onclick=async()=>{try{await navigator.share({title:'ミニ勇者の大行進',text:SHARE_TX,url});shareReward()}catch(e){}};
+ $('shC').onclick=async()=>{let ok=false;try{await navigator.clipboard.writeText(url);ok=true}catch(e){try{const t=document.createElement('textarea');t.value=url;document.body.appendChild(t);t.select();ok=document.execCommand('copy');t.remove()}catch(e2){}}toast(ok?'📋 コピーしました！':'長押しでコピーしてね')}}
+$('hshare').onclick=shareModal;
+{const _rh=renderHome;renderHome=function(){_rh();const d=$('sdot');if(d)d.style.display=shareReady()?'block':'none'}}
+// 招待URLから来た人へのプレゼント
+(()=>{let c=null;try{c=new URLSearchParams(location.search).get('inv')}catch(e){}if(!c)return;c=c.toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,8);try{history.replaceState(null,'',location.pathname+location.hash)}catch(e){}
+ if(!c||SV.invBy||c===myPid())return;SV.invBy=c;giveEq('pendantf');SV.coin+=1000;save();
+ const showGift=()=>{const st=$('story');if(!$('home').classList.contains('on')||(st&&st.classList.contains('on'))||$('modal').classList.contains('on')){setTimeout(showGift,1000);return}const e=EQ.pendantf;sfx('evo');modal(`<div class="ol" style="font-size:22px">💞 招待プレゼント！</div><div style="font-size:13px;margin:4px 0">友だちの招待で来てくれてありがとう！</div><div style="font-size:60px;margin:8px 0;animation:pop .5s">${e.ic}</div><div style="color:${RAR[e.r][1]};font-weight:900">${RAR[e.r][0]}・招待限定</div><div class="ol" style="font-size:20px">${e.n}</div><div style="margin:6px 0 4px;font-size:13px">${e.d}</div><div style="font-weight:900;margin-bottom:12px">🪙 +1000</div><div style="font-size:12px;opacity:.85;margin-bottom:10px">「👑レオ」画面のお守りにつけられます。</div><button class="btn" onclick="closeModal()">OK</button>`);renderHome()};setTimeout(showGift,1500)})();
 renderHome();
 </script></body></html>
